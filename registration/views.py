@@ -30,7 +30,7 @@ def signin(request):
             return redirect("/logged-in")
 
         else:
-            return redirect("/user-not-exitst")
+            return redirect("/user-not-exitste")
 
     # GET request on .../signin/
     else:
