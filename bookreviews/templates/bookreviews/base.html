@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>AppTitle</title>
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li><a href="{% url 'feed_view'%}">Flux</a></li>
+            <li><a href="{% url 'my_posts_view'%}">Mes posts</a></li>
+            <li><a href="{% url 'follow_view'%}">Abonnements</a></li>
+            <li><a href="{% url 'signin_view'%}">Se déconnecter</a></li>
+        </ul>
+    </header>
+        {% block content %}
+        {% endblock %}
+</body>
+</html>

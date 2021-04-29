@@ -1,0 +1,12 @@
+{% extends "bookreviews/base.html" %}
+
+{% block content %}
+    <h1>Feed</h1>
+    <div>
+        <a href="{% url 'create_ticket_view'%}">Créer un ticket</a>
+        <a href="{% url 'create_review_view'%}">Créer une review</a>
+    </div>
+    <div>
+        <h2>Latest rewiews & tickets from your followers:</h2>
+    </div>
+{% endblock %}
