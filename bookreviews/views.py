@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from bookreviews.forms import TicketForm
 
 
 @login_required()
@@ -14,7 +15,16 @@ def follow(request):
 
 @login_required()
 def create_ticket(request):
-    pass
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            form_data = form.save(commit=False)
+            form_data.user = request.user
+            form_data.save()
+
+    if request.method == 'GET':
+        form = TicketForm()
+    return render(request, 'bookreviews/create-ticket.html', {'form': form})
 
 
 @login_required()

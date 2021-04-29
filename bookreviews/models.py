@@ -6,9 +6,12 @@ from django.db import models
 class Ticket(models.Model):
     title = models.CharField(max_length=128)
     descripton = models.TextField(max_length=2048, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Review(models.Model):
