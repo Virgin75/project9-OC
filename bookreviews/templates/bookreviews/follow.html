@@ -1,0 +1,25 @@
+{% extends "bookreviews/base.html" %}
+
+{% block content %}
+    <h2>Suivre d'autres utilisateurs</h2>
+    <div></div>
+    <h2>Abonnements</h2>
+    <div>
+        <ul>
+            {% for usr in i_follow %}
+            <li>{{ usr.followed_user }}</li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+    <h2>Abonnées</h2>
+    <div>
+        <ul>
+            {% for usr in my_followers %}
+            <li>{{ usr.user }}</li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+    
+{% endblock %}

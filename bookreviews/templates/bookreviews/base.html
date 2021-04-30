@@ -11,9 +11,16 @@
             <li><a href="{% url 'feed_view'%}">Flux</a></li>
             <li><a href="{% url 'my_posts_view'%}">Mes posts</a></li>
             <li><a href="{% url 'follow_view'%}">Abonnements</a></li>
-            <li><a href="{% url 'signin_view'%}">Se déconnecter</a></li>
+            <li><a href="/registration/logout/">Se déconnecter</a></li>
         </ul>
     </header>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
         {% block content %}
         {% endblock %}
 </body>
