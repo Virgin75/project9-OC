@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from bookreviews.forms import TicketForm
-from bookreviews.models import UserFollows
+from bookreviews.forms import TicketForm, ReviewForm
+from bookreviews.models import UserFollows, Ticket
 from registration.models import User
 from django.contrib import messages
 
@@ -53,7 +53,27 @@ def create_ticket(request):
 
 @login_required()
 def create_review(request):
-    pass
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        review_form = ReviewForm(request.POST)
+        if ticket_form.is_valid() and review_form.is_valid():
+            # Création du ticket
+            ticket_form_data = ticket_form.save(commit=False)
+            ticket_form_data.user = request.user
+            ticket_form_data.save()
+            messages.success(request, 'Ticket créé avec succès.')
+            # Création de la review associée
+            review_form_data = review_form.save(commit=False)
+            review_form_data.user = request.user
+            review_form_data.ticket = Ticket.objects.get(id=ticket_form_data.id)
+            review_form_data.save()
+            messages.success(request, 'Review créée avec succès.')
+            return redirect('feed_view')
+
+    if request.method == 'GET':
+        ticket_form = TicketForm()
+        review_form = ReviewForm()
+    return render(request, 'bookreviews/create-review.html', {'review_form': review_form, 'ticket_form': ticket_form})
 
 
 @login_required()
