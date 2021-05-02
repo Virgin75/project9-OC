@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from bookreviews.forms import TicketForm
 from bookreviews.models import UserFollows
@@ -13,10 +14,25 @@ def feed(request):
 
 @login_required()
 def follow(request):
-    i_follow = UserFollows.objects.filter(user=request.user)
-    print(i_follow)
-    my_followers = UserFollows.objects.filter(followed_user=request.user)
-    return render(request, 'bookreviews/follow.html', {'i_follow': i_follow, 'my_followers': my_followers})
+    if request.method == 'POST':
+        try:
+            user_to_follow = User.objects.get(email=request.POST.get('email'))
+            UserFollows.objects.create(user=request.user, followed_user=user_to_follow)
+            messages.success(request, 'Vous suivez un nouvel utilisateur.')
+        except User.DoesNotExist:
+            messages.error(request, "Cet utilisateur n'existe pas.")
+        finally:
+            return redirect('follow_view')
+
+    if request.method == 'GET':
+        i_follow = UserFollows.objects.filter(user=request.user)
+        my_followers = UserFollows.objects.filter(followed_user=request.user)
+
+        autocomplete = User.objects.exclude(
+            Q(email__in=[usr.followed_user for usr in i_follow]) |
+            Q(email=request.user.email))
+
+        return render(request, 'bookreviews/follow.html', {'i_follow': i_follow, 'my_followers': my_followers, 'all_users': autocomplete})
 
 
 @login_required()
