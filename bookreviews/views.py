@@ -1,15 +1,29 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
+from django.db.models import Q, CharField, Value
 from django.contrib.auth.decorators import login_required
 from bookreviews.forms import TicketForm, ReviewForm
-from bookreviews.models import UserFollows, Ticket
+from bookreviews.models import UserFollows, Ticket, Review
 from registration.models import User
 from django.contrib import messages
+from itertools import chain
 
 
 @login_required()
 def feed(request):
-    return render(request, 'bookreviews/feed.html', {'data': 'data'})
+    i_follow = UserFollows.objects.filter(user=request.user)
+
+    ticket_list = Ticket.objects.filter(Q(user__in=[usr.followed_user for usr in i_follow]) | Q(user=request.user))
+    review_list = Review.objects.filter(Q(user__in=[usr.followed_user for usr in i_follow]) | Q(user=request.user))
+
+    ticket_list = ticket_list.annotate(content_type=Value('TICKET', CharField()))
+    review_list = review_list.annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(review_list, ticket_list),
+        key=lambda post: post.time_created,
+        reverse=True
+    )
+    return render(request, 'bookreviews/feed.html', context={'posts': posts, 'user': request.user})
 
 
 @login_required()
@@ -78,14 +92,60 @@ def create_review(request):
 
 @login_required()
 def edit_own_ticket(request, ticket_id):
-    pass
+    ticket = Ticket.objects.get(id=ticket_id)
+
+    if request.method == 'POST':
+        form = TicketForm(request.POST, request.FILES, instance=ticket)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ticket modifié avec succès.')
+            return redirect('my_posts_view')
+
+    if request.method == 'GET':
+        form = TicketForm(instance=ticket)
+        return render(request, 'bookreviews/edit-ticket.html', {'form': form, 'ticket_id': ticket_id})
+
+
+@login_required()
+def delete_ticket(request, ticket_id):
+    Ticket.objects.get(id=ticket_id).delete()
+    messages.success(request, 'Ticket supprimé avec succès.')
+    return redirect('my_posts_view')
 
 
 @login_required()
 def edit_own_review(request, review_id):
-    pass
+    review = Review.objects.get(id=review_id)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Review modifiée avec succès.')
+            return redirect('my_posts_view')
+    if request.method == 'GET':
+        form = ReviewForm(instance=review)
+        return render(request, 'bookreviews/edit-review.html', {'form': form, 'review_id': review_id, 'ticket': review.ticket})
+
+
+@login_required()
+def delete_review(request, review_id):
+    Review.objects.get(id=review_id).delete()
+    messages.success(request, 'Review supprimée avec succès.')
+    return redirect('my_posts_view')
 
 
 @login_required()
 def my_posts(request):
-    pass
+    ticket_list = Ticket.objects.filter(user=request.user)
+    review_list = Review.objects.filter(user=request.user)
+
+    ticket_list = ticket_list.annotate(content_type=Value('TICKET', CharField()))
+    review_list = review_list.annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(review_list, ticket_list),
+        key=lambda post: post.time_created,
+        reverse=True
+    )
+    return render(request, 'bookreviews/my-posts.html', context={'posts': posts})

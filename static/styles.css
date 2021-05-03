@@ -1,0 +1,41 @@
+.ticket-container {
+  border: 1px solid grey;
+  border-radius: 7px;
+  padding: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  max-width: 600px;
+}
+
+.review-container {
+  border: 1px solid rgb(143, 141, 28);
+  border-radius: 7px;
+  padding: 22px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  max-width: 600px;
+}
+
+.cover {
+  width: 100px;
+  height: auto;
+  border-radius: 6px;
+}
+
+.you {
+  color: green;
+}
+
+#id_rating {
+  display: flex;
+}
+
+#id_rating > li {
+  margin-right: 15px;
+  list-style-type: none;
+}
+
+#id_rating > li > label > input {
+  width: 20px;
+  height: 20px;
+}

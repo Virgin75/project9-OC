@@ -1,0 +1,32 @@
+{% extends "bookreviews/base.html" %}
+
+{% block content %}
+  <h2>Votre review est en réponse au ticket :</h2>
+    <div class="ticket-container">
+      <div>
+        <span>{{ ticket.user }} a demandé une review.</span>
+        <span>{{ ticket.time_created }}</span>
+    </div>
+    <h2>{{ ticket.title }}</h2>
+    <span>{{ ticket.description }}</span>
+    <img class="cover" src="/media/{{ ticket.image }}" alt="image de couverture du ticket" />
+    
+    </div>
+    <h1>Modifier la review n°{{ review_id }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+          <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+              <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </p>
+        {% endfor %}
+        <button type="submit">Modifier la review</button>
+      </form>
+{% endblock %}
