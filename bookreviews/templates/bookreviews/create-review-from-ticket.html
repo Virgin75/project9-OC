@@ -1,0 +1,34 @@
+{% extends "bookreviews/base.html" %}
+
+{% block content %}
+<h1>Créer une nouvelle review</h1>
+<div>
+  {% if user == ticket.user %}
+  <span class="you">Vous avez créé ce ticket</span>
+  {% else %}
+  <span>Ticket créé par {{ ticket.user }}</span>
+  {% endif %}
+  <span>{{ ticket.time_created }}</span>
+</div>
+<h2>{{ ticket.title }}</h2>
+<div><span>{{ ticket.descripton }}</span></div>
+<img class="cover" src="/media/{{ ticket.image }}" alt="image de couverture du ticket" />
+</div>
+<hr>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+    {% for field in review_form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Envoyer</button>
+  </form>
+{% endblock %}

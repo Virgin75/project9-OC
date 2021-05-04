@@ -50,6 +50,14 @@ def follow(request):
 
 
 @login_required()
+def unfollow(request, user_id):
+    user_to_unfollow = User.objects.get(id=user_id)
+    UserFollows.objects.get(followed_user=user_to_unfollow).delete()
+    messages.success(request, 'Désabonnement réalisé avec succès.')
+    return redirect('follow_view')
+
+
+@login_required()
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
@@ -91,6 +99,26 @@ def create_review(request):
 
 
 @login_required()
+def create_review_from_ticket(request, ticket_id):
+    ticket = Ticket.objects.get(id=ticket_id)
+
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            # Création de la review associée
+            review_form_data = review_form.save(commit=False)
+            review_form_data.user = request.user
+            review_form_data.ticket = ticket
+            review_form_data.save()
+            messages.success(request, 'Review créée avec succès.')
+            return redirect('feed_view')
+
+    if request.method == 'GET':
+        review_form = ReviewForm()
+    return render(request, 'bookreviews/create-review-from-ticket.html', {'review_form': review_form, 'ticket': ticket, 'user': request.user})
+
+
+@ login_required()
 def edit_own_ticket(request, ticket_id):
     ticket = Ticket.objects.get(id=ticket_id)
 
@@ -106,14 +134,14 @@ def edit_own_ticket(request, ticket_id):
         return render(request, 'bookreviews/edit-ticket.html', {'form': form, 'ticket_id': ticket_id})
 
 
-@login_required()
+@ login_required()
 def delete_ticket(request, ticket_id):
     Ticket.objects.get(id=ticket_id).delete()
     messages.success(request, 'Ticket supprimé avec succès.')
     return redirect('my_posts_view')
 
 
-@login_required()
+@ login_required()
 def edit_own_review(request, review_id):
     review = Review.objects.get(id=review_id)
 
@@ -128,14 +156,14 @@ def edit_own_review(request, review_id):
         return render(request, 'bookreviews/edit-review.html', {'form': form, 'review_id': review_id, 'ticket': review.ticket})
 
 
-@login_required()
+@ login_required()
 def delete_review(request, review_id):
     Review.objects.get(id=review_id).delete()
     messages.success(request, 'Review supprimée avec succès.')
     return redirect('my_posts_view')
 
 
-@login_required()
+@ login_required()
 def my_posts(request):
     ticket_list = Ticket.objects.filter(user=request.user)
     review_list = Review.objects.filter(user=request.user)

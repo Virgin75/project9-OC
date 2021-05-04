@@ -17,20 +17,20 @@
     </div>
     <h2>Abonnements</h2>
     <div>
-        <ul>
+    
             {% for usr in i_follow %}
-            <li>{{ usr.followed_user }}</li>
+            <div><span>{{ usr.followed_user }}</span><a href="{% url 'unfollow_view' user_id=usr.followed_user.id%}">Ne plus suivre</a></div>
             {% endfor %}
-        </ul>
+    
         
     </div>
     <h2>Abonnées</h2>
     <div>
-        <ul>
+    
             {% for usr in my_followers %}
-            <li>{{ usr.user }}</li>
+            <div>{{ usr.user }}</div>
             {% endfor %}
-        </ul>
+        
         
     </div>
     
