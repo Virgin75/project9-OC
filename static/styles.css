@@ -239,3 +239,30 @@ textarea:focus {
   font-weight: 400;
   color: red;
 }
+
+.step-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 65px;
+}
+
+.current {
+  padding-left: 33px;
+  padding-right: 33px;
+  font-size: 2em;
+  color: peru;
+}
+
+.next,
+.previous {
+  color: peru;
+  margin-right: 22px;
+  margin-left: 22px;
+}
+
+.end,
+.start {
+  color: rgb(139, 84, 29);
+  text-decoration: none;
+}

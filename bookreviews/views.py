@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q, CharField, Value
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from bookreviews.forms import TicketForm, ReviewForm
 from bookreviews.models import UserFollows, Ticket, Review
@@ -23,7 +24,12 @@ def feed(request):
         key=lambda post: post.time_created,
         reverse=True
     )
-    return render(request, 'bookreviews/feed.html', context={'posts': posts, 'user': request.user})
+
+    paginator = Paginator(posts, 5)
+    page = request.GET.get('page')
+    paginated_posts = paginator.get_page(page)
+
+    return render(request, 'bookreviews/feed.html', context={'posts': paginated_posts, 'user': request.user})
 
 
 @login_required()

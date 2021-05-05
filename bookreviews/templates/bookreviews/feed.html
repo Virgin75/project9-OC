@@ -60,6 +60,23 @@
                 </div>
                 {% endif %}
             {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <a class="start" href="?page=1">&laquo; Revenir au début</a>
+                        <a class="previous" href="?page={{ posts.previous_page_number }}">Précédent</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ posts.number }} sur {{ posts.paginator.num_pages }}
+                    </span>
+            
+                    {% if posts.has_next %}
+                        <a class="next" href="?page={{ posts.next_page_number }}">Suivant</a>
+                        <a class="end" href="?page={{ posts.paginator.num_pages }}">Aller vers la dernière page &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         </div>
     </div>
 {% endblock %}
