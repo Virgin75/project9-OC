@@ -1,19 +1,24 @@
+body {
+  font-family: 'Open Sans';
+  margin: 0px;
+}
 .ticket-container {
-  border: 1px solid grey;
+  border: 1px solid #80808063;
   border-radius: 7px;
-  padding: 22px;
+  padding: 50px;
   margin-top: 12px;
   margin-bottom: 12px;
-  max-width: 600px;
+  min-width: 67vw;
+  background-color: white;
 }
 
 .review-container {
-  border: 1px solid rgb(143, 141, 28);
   border-radius: 7px;
-  padding: 22px;
+  padding: 50px;
   margin-top: 12px;
   margin-bottom: 12px;
-  max-width: 600px;
+  min-width: 67vw;
+  background-color: #cd853f14;
 }
 
 .cover {
@@ -38,4 +43,199 @@
 #id_rating > li > label > input {
   width: 20px;
   height: 20px;
+}
+header {
+  height: 86px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: white;
+  width: 100vw;
+  top: 0px;
+  -webkit-box-shadow: 2px 2px 31px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 2px 2px 31px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 31px 3px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  text-decoration: none;
+  padding: 14px;
+  border: 1px solid rgba(73, 73, 72, 0.678);
+  border-radius: 5px;
+  margin-right: 13px;
+  color: rgb(73, 73, 72, 0.678);
+  font-weight: 700;
+}
+
+.menu-item:hover {
+  text-decoration: none;
+  padding: 14px;
+  border: 1px solid rgb(212, 142, 12);
+  background-color: rgb(212, 142, 12);
+  border-radius: 5px;
+  margin-right: 13px;
+  color: white;
+  font-weight: 700;
+}
+
+.last-item {
+  text-decoration: none;
+  padding: 14px;
+  margin-right: 53px;
+  color: rgb(165, 65, 65);
+  font-weight: 700;
+  border: none;
+}
+
+.last-item:hover {
+  text-decoration: none;
+  padding: 14px;
+  margin-right: 53px;
+  color: rgb(73, 24, 24);
+  font-weight: 700;
+  border: none;
+}
+
+.first-item {
+  margin-right: auto;
+  text-decoration: none;
+  font-size: 2.2em;
+  color: peru;
+  font-weight: 300;
+  margin-left: 40px;
+}
+
+h1 {
+  font-size: 2em;
+  color: peru;
+  font-weight: 300;
+  padding-bottom: 33px;
+  text-align: center;
+}
+
+.main {
+  margin-top: 142px;
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.primary-btn,
+.secondary-btn:hover,
+button {
+  text-decoration: none;
+  padding: 14px;
+  border: 1px solid rgb(212, 142, 12);
+  background-color: rgb(212, 142, 12);
+  border-radius: 5px;
+  margin-right: 13px;
+  color: white;
+  font-weight: 700;
+}
+
+.primary-btn:hover {
+  text-decoration: none;
+  padding: 14px;
+  border: 1px solid rgb(212, 142, 12);
+  background-color: rgb(148, 101, 13);
+  border-radius: 5px;
+  margin-right: 13px;
+  color: white;
+  font-weight: 700;
+}
+
+.secondary-btn {
+  text-decoration: none;
+  padding: 14px;
+  border: 1px solid rgb(212, 142, 12);
+  border-radius: 5px;
+  margin-right: 13px;
+  color: rgb(212, 142, 12);
+  font-weight: 700;
+}
+
+.btn-container {
+  display: flex;
+  padding-bottom: 35px;
+}
+
+.subtitle {
+  font-weight: 200;
+  text-align: center;
+  padding-bottom: 35px;
+  padding-top: 35px;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+input,
+textarea {
+  border: 1px solid peru;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 12px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgb(151, 91, 31);
+}
+
+.user-follow {
+  display: flex;
+  border: 1px solid rgba(128, 128, 128, 0.466);
+  border-radius: 4px;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 50vw;
+  margin-bottom: 6px;
+  padding-left: 53px;
+}
+
+.user-follow-bis {
+  display: flex;
+  border-radius: 4px;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 50vw;
+  margin-bottom: 6px;
+  padding-left: 53px;
+  background-color: #cd853f14;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.message {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 33px;
+  left: 33px;
+  height: 80px;
+  width: 33vw;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.success {
+  background-color: rgba(19, 66, 18, 0.151);
+  font-weight: 400;
+  color: green;
+}
+
+.error {
+  background-color: rgba(255, 0, 0, 0.11);
+  font-weight: 400;
+  color: red;
 }

@@ -1,18 +1,18 @@
 {% extends "bookreviews/base.html" %}
 
 {% block content %}
-    <h1>Feed</h1>
-    <div>
-        <a href="{% url 'create_ticket_view'%}">Créer un ticket</a>
-        <a href="{% url 'create_review_view'%}">Créer une review</a>
+    <h1>Bonjour {{ user.email }}, voici <b>votre feed</b></h1>
+    <div class="btn-container">
+        <a class="primary-btn" href="{% url 'create_ticket_view'%}">Créer un ticket</a>
+        <a class="secondary-btn" href="{% url 'create_review_view'%}">Créer une review</a>
     </div>
     <div>
-        <h2>Posts les plus récents des personnes que vous suivez :</h2>
+        <h2 class="subtitle">👉 Posts les plus récents des personnes que vous suivez :</h2>
         <div>
             {% for post in posts %}
                 {% if post.content_type == 'TICKET' %}
                     <div class="ticket-container">
-                        <div>
+                        <div class="metadata">
                             {% if user == post.user %}
                             <span class="you">Vous avez créé ce ticket</span>
                             {% else %}
@@ -23,15 +23,15 @@
                         <h2>{{ post.title }}</h2>
                         <div><span>{{ post.descripton }}</span></div>
                         <img class="cover" src="/media/{{ post.image }}" alt="image de couverture du ticket" />
-                        <div>
-                            <a href="{% url 'create_review_from_ticket_view' ticket_id=post.id%}">Créer une review</a>
+                        <div class="card-btn-container">
+                            <a class="secondary-btn" href="{% url 'create_review_from_ticket_view' ticket_id=post.id%}">Créer une review</a>
                         </div>
                     </div>
                     
     
                 {% elif post.content_type == 'REVIEW' %}
                 <div class="review-container">
-                    <div>
+                    <div class="metadata">
                         {% if user == post.user %}
                             <span class="you">Vous avez créé cette review</span>
                             {% else %}
@@ -45,7 +45,7 @@
                         <span>{{ post.body }}</span>
                     </div>
                     <div class="ticket-container">
-                        <div>
+                        <div class="metadata">
                             {% if user == post.ticket.user %}
                             <span class="you">Vous avez créé ce ticket</span>
                             {% else %}

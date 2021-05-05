@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Créer une nouvelle review</h1>
-    <h2>1. Créer un nouveau ticket</h2>
+    <h2 class="subtitle">1. Créer un nouveau ticket</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in ticket_form %}
@@ -18,7 +18,7 @@
           </p>
         {% endfor %}
         <hr>
-        <h2>2. Créer la review liée à ce ticket</h2>
+        <h2 class="subtitle">2. Créer la review liée à ce ticket</h2>
         {% for field in review_form %}
           <p>
             {{ field.label_tag }}<br>

@@ -1,7 +1,7 @@
 {% extends "bookreviews/base.html" %}
 
 {% block content %}
-    <h2>Suivre d'autres utilisateurs</h2>
+    <h1>Suivez de nouveaux utilisateurs</h1>
     <div>
         <form method="post">
             {% csrf_token %}
@@ -15,20 +15,20 @@
             <button type="submit">Suivre</button>
           </form>
     </div>
-    <h2>Abonnements</h2>
+    <h2 class="subtitle">Vous suivez les utilisateurs suivants :</h2>
     <div>
     
             {% for usr in i_follow %}
-            <div><span>{{ usr.followed_user }}</span><a href="{% url 'unfollow_view' user_id=usr.followed_user.id%}">Ne plus suivre</a></div>
+            <div class="user-follow"><span>😎 {{ usr.followed_user }}</span><a class="last-item"href="{% url 'unfollow_view' user_id=usr.followed_user.id%}">Ne plus suivre</a></div>
             {% endfor %}
     
         
     </div>
-    <h2>Abonnées</h2>
+    <h2 class="subtitle">Ces utilisateurs vous suivent :</h2>
     <div>
     
             {% for usr in my_followers %}
-            <div>{{ usr.user }}</div>
+            <div class="user-follow-bis">👀 {{ usr.user }}</div>
             {% endfor %}
         
         

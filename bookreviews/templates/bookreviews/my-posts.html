@@ -6,24 +6,24 @@
         {% for post in posts %}
             {% if post.content_type == 'TICKET' %}
                 <div class="ticket-container">
-                    <div>
-                        <span>Vous avez publié un ticket</span>
+                    <div class="metadata">
+                        <span>Votre <b>TICKET</b></span>
                         <span>{{ post.time_created }}</span>
                     </div>
                     <h2>{{ post.title }}</h2>
                     <div><span>{{ post.descripton }}</span></div>
                     <img class="cover" src="/media/{{ post.image }}" alt="image de couverture du ticket" />
-                    <div>
-                        <a href="{% url 'edit_own_ticket_view' ticket_id=post.id%}">Modifier</a>
-                        <a href="{% url 'delete_ticket_view' ticket_id=post.id%}">Supprimer</a>
+                    <div class="card-btn-container">
+                        <a class="primary-btn" href="{% url 'edit_own_ticket_view' ticket_id=post.id%}">Modifier</a>
+                        <a class="last-item" href="{% url 'delete_ticket_view' ticket_id=post.id%}">Supprimer</a>
                     </div>
                 </div>
                 
 
             {% elif post.content_type == 'REVIEW' %}
             <div class="review-container">
-                <div>
-                    <span>Vous avez publié une review</span>
+                <div class="metadata">
+                    <span>Votre <b>REVIEW</span>
                     <span>{{ post.time_created }}</span>
                 </div>
                 <div>
@@ -32,16 +32,16 @@
                     <span>{{ post.body }}</span>
                 </div>
                 <div class="ticket-container">
-                    <div>
-                        <span>Vous avez publié un ticket</span>
+                    <div class="metadata">
+                        <span>Votre <b>TICKET</span>
                         <span>{{ post.ticket.time_created }}</span>
                     </div>
                     <h2>{{ post.ticket.title }}</h2>
                     <img class="cover" src="/media/{{ post.ticket.image }}" alt="image de couverture du ticket" />
                 </div>
-                <div>
-                    <a href="{% url 'edit_own_review_view' review_id=post.id%}">Modifier</a>
-                    <a href="{% url 'delete_review_view' review_id=post.id%}">Supprimer</a>
+                <div class="card-btn-container">
+                    <a class="primary-btn" href="{% url 'edit_own_review_view' review_id=post.id%}">Modifier</a>
+                    <a class="last-item" href="{% url 'delete_review_view' review_id=post.id%}">Supprimer</a>
                 </div>
             </div>
             {% endif %}

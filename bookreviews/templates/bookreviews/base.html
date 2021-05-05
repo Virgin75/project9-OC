@@ -2,26 +2,31 @@
 <html lang="fr">
 <head>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <title>AppTitle</title>
 </head>
 
 <body>
     <header>
-        <ul>
-            <li><a href="{% url 'feed_view'%}">Flux</a></li>
-            <li><a href="{% url 'my_posts_view'%}">Mes posts</a></li>
-            <li><a href="{% url 'follow_view'%}">Abonnements</a></li>
-            <li><a href="/registration/logout/">Se déconnecter</a></li>
-        </ul>
+            <a class="first-item" href="{% url 'feed_view'%}">LitReview</a>
+            <a class="menu-item" href="{% url 'feed_view'%}">Flux</a>
+            <a class="menu-item" href="{% url 'my_posts_view'%}">Mes posts</a>
+            <a class="menu-item" href="{% url 'follow_view'%}">Abonnements</a>
+            <a class="last-item" href="/registration/logout/">Se déconnecter</a>
     </header>
+    
     {% if messages %}
-    <ul class="messages">
+    <div class="messages">
     {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <div class="message {{ message.tags }}">
+            <span>{{ message }}</span>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
     {% endif %}
+    <section class="main">
         {% block content %}
         {% endblock %}
+    </section>
 </body>
 </html>
