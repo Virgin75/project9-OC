@@ -8,11 +8,7 @@
 
 <body>
     <header>
-            <a class="first-item" href="{% url 'feed_view'%}">LitReview</a>
-            <a class="menu-item" href="{% url 'feed_view'%}">Flux</a>
-            <a class="menu-item" href="{% url 'my_posts_view'%}">Mes posts</a>
-            <a class="menu-item" href="{% url 'follow_view'%}">Abonnements</a>
-            <a class="last-item" href="/registration/logout/">Se déconnecter</a>
+            <a class="first-item" href="{% url 'signin_view'%}">LitReview</a>
     </header>
     
     {% if messages %}
@@ -28,6 +24,5 @@
         {% block content %}
         {% endblock %}
     </section>
-    <script src="/static/close-message-popup.js"></script>
 </body>
 </html>

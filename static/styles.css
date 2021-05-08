@@ -184,6 +184,7 @@ textarea {
   padding: 10px;
   border-radius: 5px;
   margin-top: 12px;
+  width: 100%;
 }
 
 input:focus,
@@ -226,6 +227,7 @@ textarea:focus {
   width: 33vw;
   border-radius: 5px;
   background-color: white;
+  visibility: visible;
 }
 
 .success {
@@ -265,4 +267,15 @@ textarea:focus {
 .start {
   color: rgb(139, 84, 29);
   text-decoration: none;
+}
+
+.signup-container {
+  padding: 10px 30px 45px 30px;
+  margin-top: 55px;
+  border: solid 1px grey;
+  border-radius: 6px;
+}
+
+p {
+  padding-bottom: 19px;
 }

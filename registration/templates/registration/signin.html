@@ -1,4 +1,7 @@
-<h2>Sign in</h2>
+{% extends "registration/base.html" %}
+
+{% block content %}
+<h2>Bienvenue sur LitReview, connectez-vous 👇</h2>
 <form method="post">
   {% csrf_token %}
   {% for field in form %}
@@ -13,5 +16,11 @@
       {% endfor %}
     </p>
   {% endfor %}
-  <button type="submit">Sign in</button>
+  <button type="submit">Se connecter</button>
 </form>
+<div class="signup-container">
+<h2>Pas encore inscrit sur LitReview ?</h2>
+<p>Créez votre compte dès maintenant pour commencer à publier des avis ou en demander.</p>
+<a href="{% url 'signup_view' %}" class="secondary-btn">S'inscrire sur Lit Review</a>
+</div>
+{% endblock %}

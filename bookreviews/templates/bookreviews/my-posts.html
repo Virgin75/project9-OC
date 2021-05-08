@@ -45,6 +45,8 @@
                 </div>
             </div>
             {% endif %}
+        {% empty %}
+        <span>Aucun post à afficher pour le moment. 👀</span>
         {% endfor %}
     </div>
 {% endblock %}

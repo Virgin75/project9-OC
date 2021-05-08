@@ -17,9 +17,10 @@
     </div>
     <h2 class="subtitle">Vous suivez les utilisateurs suivants :</h2>
     <div>
-    
             {% for usr in i_follow %}
             <div class="user-follow"><span>😎 {{ usr.followed_user }}</span><a class="last-item"href="{% url 'unfollow_view' user_id=usr.followed_user.id%}">Ne plus suivre</a></div>
+            {% empty %}
+            <span>Vous ne suivez aucun utilisateur pour le moment. Suivez des utilisateurs via le formulaire ci-dessus ☝️</span>
             {% endfor %}
     
         
@@ -29,6 +30,8 @@
     
             {% for usr in my_followers %}
             <div class="user-follow-bis">👀 {{ usr.user }}</div>
+            {% empty %}
+            <span>Vous n'êtes pas très populaire. Personne ne vous suit 👀</span>
             {% endfor %}
         
         

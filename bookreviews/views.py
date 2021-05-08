@@ -11,13 +11,18 @@ from itertools import chain
 
 @login_required()
 def feed(request):
-    i_follow = UserFollows.objects.filter(user=request.user)
+    i_follow = UserFollows.objects.filter(
+        user=request.user).values_list('followed_user')
 
-    ticket_list = Ticket.objects.filter(Q(user__in=[usr.followed_user for usr in i_follow]) | Q(user=request.user))
-    review_list = Review.objects.filter(Q(user__in=[usr.followed_user for usr in i_follow]) | Q(user=request.user))
+    ticket_list = Ticket.objects.filter(
+        Q(user__in=[usr for usr in i_follow]) |
+        Q(user=request.user)
+    ).annotate(content_type=Value('TICKET', CharField()))
 
-    ticket_list = ticket_list.annotate(content_type=Value('TICKET', CharField()))
-    review_list = review_list.annotate(content_type=Value('REVIEW', CharField()))
+    review_list = Review.objects.filter(
+        Q(user__in=[usr for usr in i_follow]) |
+        Q(user=request.user)
+    ).annotate(content_type=Value('REVIEW', CharField()))
 
     posts = sorted(
         chain(review_list, ticket_list),
@@ -29,7 +34,11 @@ def feed(request):
     page = request.GET.get('page')
     paginated_posts = paginator.get_page(page)
 
-    return render(request, 'bookreviews/feed.html', context={'posts': paginated_posts, 'user': request.user})
+    return render(
+        request,
+        'bookreviews/feed.html',
+        context={'posts': paginated_posts, 'user': request.user}
+    )
 
 
 @login_required()
@@ -37,7 +46,10 @@ def follow(request):
     if request.method == 'POST':
         try:
             user_to_follow = User.objects.get(email=request.POST.get('email'))
-            UserFollows.objects.create(user=request.user, followed_user=user_to_follow)
+            UserFollows.objects.create(
+                user=request.user,
+                followed_user=user_to_follow
+            )
             messages.success(request, 'Vous suivez un nouvel utilisateur.')
         except User.DoesNotExist:
             messages.error(request, "Cet utilisateur n'existe pas.")
@@ -52,7 +64,13 @@ def follow(request):
             Q(email__in=[usr.followed_user for usr in i_follow]) |
             Q(email=request.user.email))
 
-        return render(request, 'bookreviews/follow.html', {'i_follow': i_follow, 'my_followers': my_followers, 'all_users': autocomplete})
+        return render(
+            request,
+            'bookreviews/follow.html',
+            {'i_follow': i_follow,
+             'my_followers': my_followers,
+             'all_users': autocomplete}
+        )
 
 
 @login_required()
@@ -76,7 +94,11 @@ def create_ticket(request):
 
     if request.method == 'GET':
         form = TicketForm()
-    return render(request, 'bookreviews/create-ticket.html', {'form': form})
+    return render(
+        request,
+        'bookreviews/create-ticket.html',
+        {'form': form}
+    )
 
 
 @login_required()
@@ -93,7 +115,8 @@ def create_review(request):
             # Création de la review associée
             review_form_data = review_form.save(commit=False)
             review_form_data.user = request.user
-            review_form_data.ticket = Ticket.objects.get(id=ticket_form_data.id)
+            review_form_data.ticket = Ticket.objects.get(
+                id=ticket_form_data.id)
             review_form_data.save()
             messages.success(request, 'Review créée avec succès.')
             return redirect('feed_view')
@@ -101,7 +124,10 @@ def create_review(request):
     if request.method == 'GET':
         ticket_form = TicketForm()
         review_form = ReviewForm()
-    return render(request, 'bookreviews/create-review.html', {'review_form': review_form, 'ticket_form': ticket_form})
+    return render(
+        request,
+        'bookreviews/create-review.html',
+        {'review_form': review_form, 'ticket_form': ticket_form})
 
 
 @login_required()
@@ -121,7 +147,10 @@ def create_review_from_ticket(request, ticket_id):
 
     if request.method == 'GET':
         review_form = ReviewForm()
-    return render(request, 'bookreviews/create-review-from-ticket.html', {'review_form': review_form, 'ticket': ticket, 'user': request.user})
+    return render(
+        request,
+        'bookreviews/create-review-from-ticket.html',
+        {'review_form': review_form, 'ticket': ticket, 'user': request.user})
 
 
 @ login_required()
@@ -137,7 +166,10 @@ def edit_own_ticket(request, ticket_id):
 
     if request.method == 'GET':
         form = TicketForm(instance=ticket)
-        return render(request, 'bookreviews/edit-ticket.html', {'form': form, 'ticket_id': ticket_id})
+        return render(
+            request,
+            'bookreviews/edit-ticket.html',
+            {'form': form, 'ticket_id': ticket_id})
 
 
 @ login_required()
@@ -159,7 +191,10 @@ def edit_own_review(request, review_id):
             return redirect('my_posts_view')
     if request.method == 'GET':
         form = ReviewForm(instance=review)
-        return render(request, 'bookreviews/edit-review.html', {'form': form, 'review_id': review_id, 'ticket': review.ticket})
+        return render(
+            request,
+            'bookreviews/edit-review.html',
+            {'form': form, 'review_id': review_id, 'ticket': review.ticket})
 
 
 @ login_required()
@@ -171,15 +206,20 @@ def delete_review(request, review_id):
 
 @ login_required()
 def my_posts(request):
-    ticket_list = Ticket.objects.filter(user=request.user)
-    review_list = Review.objects.filter(user=request.user)
+    ticket_list = Ticket.objects.filter(
+        user=request.user
+    ).annotate(content_type=Value('TICKET', CharField()))
 
-    ticket_list = ticket_list.annotate(content_type=Value('TICKET', CharField()))
-    review_list = review_list.annotate(content_type=Value('REVIEW', CharField()))
+    review_list = Review.objects.filter(
+        user=request.user
+    ).annotate(content_type=Value('REVIEW', CharField()))
 
     posts = sorted(
         chain(review_list, ticket_list),
         key=lambda post: post.time_created,
         reverse=True
     )
-    return render(request, 'bookreviews/my-posts.html', context={'posts': posts})
+    return render(
+        request,
+        'bookreviews/my-posts.html',
+        context={'posts': posts})
