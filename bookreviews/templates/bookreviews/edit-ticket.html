@@ -3,19 +3,7 @@
 {% block content %}
     <h1>Modifier le ticket n°{{ ticket_id }}</h1>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in form %}
-          <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            {% if field.help_text %}
-              <small style="color: grey">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-              <p style="color: red">{{ error }}</p>
-            {% endfor %}
-          </p>
-        {% endfor %}
+      {% include "bookreviews/form.html" with form=form %}
         <button type="submit">Modifier le ticket</button>
       </form>
 {% endblock %}

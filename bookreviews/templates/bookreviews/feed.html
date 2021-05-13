@@ -11,58 +11,17 @@
         <div>
             {% for post in posts %}
                 {% if post.content_type == 'TICKET' %}
-                    <div class="ticket-container">
-                        <div class="metadata">
-                            {% if user == post.user %}
-                            <span class="you">Vous avez créé ce ticket</span>
-                            {% else %}
-                            <span>Ticket créé par {{ post.user }}</span>
-                            {% endif %}
-                            <span>{{ post.time_created }}</span>
-                        </div>
-                        <h2>{{ post.title }}</h2>
-                        <div><span>{{ post.descripton }}</span></div>
-                        <img class="cover" src="/media/{{ post.image }}" alt="image de couverture du ticket" />
-                        <div class="card-btn-container">
-                            <a class="secondary-btn" href="{% url 'create_review_from_ticket_view' ticket_id=post.id%}">Créer une review</a>
-                        </div>
-                    </div>
-                    
-    
+                    {% include "bookreviews/ticket-container.html" with has_create_review_btn=True is_editable=False is_within_review=False %}
+                
                 {% elif post.content_type == 'REVIEW' %}
-                <div class="review-container">
-                    <div class="metadata">
-                        {% if user == post.user %}
-                            <span class="you">Vous avez créé cette review</span>
-                            {% else %}
-                            <span>Review créée par {{ post.user }}</span>
-                            {% endif %}
-                        <span>{{ post.time_created }}</span>
-                    </div>
-                    <div>
-                        <h2>{{ post.headline }}</h2>
-                        <span>{{ post.rating }} /5</span>
-                        <span>{{ post.body }}</span>
-                    </div>
-                    <div class="ticket-container">
-                        <div class="metadata">
-                            {% if user == post.ticket.user %}
-                            <span class="you">Vous avez créé ce ticket</span>
-                            {% else %}
-                            <span>Ticket créé par {{ post.ticket.user }}</span>
-                            {% endif %}
-                            <span>{{ post.ticket.time_created }}</span>
-                        </div>
-                        <h2>{{ post.ticket.title }}</h2>
-                        <img class="cover" src="/media/{{ post.ticket.image }}" alt="image de couverture du ticket" />
-                    </div>
-                    
-                </div>
+                    {% include "bookreviews/review-container.html" with is_editable=False%}
+                
                 {% endif %}
             {% empty %}
             <span>Aucun post à afficher pour le moment. 👀</span>
             {% endfor %}
-            <div class="pagination">
+
+        <div class="pagination">
                 <span class="step-links">
                     {% if posts.has_previous %}
                         <a class="start" href="?page=1">&laquo; Revenir au début</a>

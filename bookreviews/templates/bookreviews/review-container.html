@@ -1,0 +1,22 @@
+<div class="review-container">
+    <div class="metadata">
+        {% if user == post.user %}
+            <span class="you">Vous avez créé cette review</span>
+            {% else %}
+            <span>Review créée par {{ post.user }}</span>
+            {% endif %}
+        <span>{{ post.time_created }}</span>
+    </div>
+    <div>
+        <h2>{{ post.headline }}</h2>
+        <span>{{ post.rating }} /5</span>
+        <span>{{ post.body }}</span>
+    </div>
+    {% include "bookreviews/ticket-container.html" with has_create_review_btn=False is_editable=False is_within_review=True %}
+    {% if is_editable %}
+    <div class="card-btn-container">
+        <a class="primary-btn" href="{% url 'edit_own_review_view' review_id=post.id%}">Modifier</a>
+        <a class="last-item" href="{% url 'delete_review_view' review_id=post.id%}">Supprimer</a>
+    </div>
+    {% endif %}
+</div>
