@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect
 from django.db.models import Q, CharField, Value
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.contrib import messages
+
 from bookreviews.forms import TicketForm, ReviewForm
 from bookreviews.models import UserFollows, Ticket, Review
 from registration.models import User
-from django.contrib import messages
+
 from itertools import chain
 
 
@@ -157,6 +160,9 @@ def create_review_from_ticket(request, ticket_id):
 def edit_own_ticket(request, ticket_id):
     ticket = Ticket.objects.get(id=ticket_id)
 
+    if ticket.user != request.user:
+        return HttpResponseForbidden()
+
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
@@ -174,7 +180,13 @@ def edit_own_ticket(request, ticket_id):
 
 @ login_required()
 def delete_ticket(request, ticket_id):
-    Ticket.objects.get(id=ticket_id).delete()
+    ticket = Ticket.objects.get(id=ticket_id)
+
+    if ticket.user != request.user:
+        return HttpResponseForbidden()
+
+    ticket.delete()
+
     messages.success(request, 'Ticket supprimé avec succès.')
     return redirect('my_posts_view')
 
@@ -182,6 +194,9 @@ def delete_ticket(request, ticket_id):
 @ login_required()
 def edit_own_review(request, review_id):
     review = Review.objects.get(id=review_id)
+
+    if review.user != request.user:
+        return HttpResponseForbidden()
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -199,7 +214,13 @@ def edit_own_review(request, review_id):
 
 @ login_required()
 def delete_review(request, review_id):
-    Review.objects.get(id=review_id).delete()
+    review = Review.objects.get(id=review_id)
+
+    if review.user != request.user:
+        return HttpResponseForbidden()
+
+    review.delete()
+
     messages.success(request, 'Review supprimée avec succès.')
     return redirect('my_posts_view')
 
