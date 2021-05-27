@@ -79,7 +79,7 @@ def follow(request):
 @login_required()
 def unfollow(request, user_id):
     user_to_unfollow = User.objects.get(id=user_id)
-    UserFollows.objects.get(followed_user=user_to_unfollow).delete()
+    UserFollows.objects.get(followed_user=user_to_unfollow, user=request.user).delete()
     messages.success(request, 'Désabonnement réalisé avec succès.')
     return redirect('follow_view')
 
