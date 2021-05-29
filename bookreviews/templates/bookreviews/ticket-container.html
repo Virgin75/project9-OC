@@ -1,11 +1,20 @@
 <div class="ticket-container">
     <div class="metadata">
-        {% if user == post.user %}
-        <span class="you">Vous avez créé ce ticket</span>
-        {% else %}
-        <span>Ticket créé par {{ post.user }}</span>
+        {% if is_within_review %}
+            {% if user == post.ticket.user %}
+            <span class="you">Vous avez créé ce ticket</span>
+            {% else %}
+            <span>Ticket créé par {{ post.ticket.user }}</span>
+            {% endif %}
+            <span>{{ post.ticket.time_created }}</span>
+        {%else %}
+            {% if user == post.user %}
+            <span class="you">Vous avez créé ce ticket</span>
+            {% else %}
+            <span>Ticket créé par {{ post.user }}</span>
+            {% endif %}
+            <span>{{ post.time_created }}</span>
         {% endif %}
-        <span>{{ post.time_created }}</span>
     </div>
     <h2>{{ post.title }}</h2>
     <div><span>{{ post.descripton }}</span></div>
